@@ -1,0 +1,129 @@
+/* ==========================================================
+   STADIUM GO — Design System (Single Source of Truth)
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Rubik:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* --- Brand Colors --- */
+  --color-primary: #0891B2;       /* Cyan 600 */
+  --color-primary-hover: #0E7490; /* Cyan 700 */
+  --color-secondary: #22D3EE;     /* Cyan 400 */
+  --color-accent: #059669;        /* Emerald 600 */
+  --color-on-primary: #FFFFFF;
+
+  /* --- Surface Colors --- */
+  --color-background: #ECFEFF;    /* Cyan 50 */
+  --color-surface: rgba(255, 255, 255, 0.7);
+  --color-foreground: #164E63;    /* Cyan 950 */
+  --color-muted: #E8F1F6;
+  --color-border: #A5F3FC;        /* Cyan 200 */
+
+  /* --- Semantic Colors --- */
+  --color-destructive: #DC2626;
+  --color-success: #10B981;
+  --color-warning: #F59E0B;
+
+  /* --- Status (Traffic Light) --- */
+  --status-green: #10B981;
+  --status-yellow: #F59E0B;
+  --status-red: #EF4444;
+
+  /* --- Spacing (8dp rhythm) --- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+
+  /* --- Typography --- */
+  --font-family-header: 'Outfit', sans-serif;
+  --font-family-body: 'Rubik', sans-serif;
+
+  /* --- Transitions --- */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+
+  /* --- Border Radius --- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+}
+
+/* --- Dark Mode --- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-background: #0C1222;
+    --color-surface: rgba(15, 23, 42, 0.8);
+    --color-foreground: #E2E8F0;
+    --color-muted: #1E293B;
+    --color-border: #1E3A5F;
+  }
+}
+
+/* --- Base Reset --- */
+body {
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  font-family: var(--font-family-body);
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-family-header);
+  font-weight: 700;
+  margin: 0;
+}
+
+/* --- Utility: Glassmorphism Card --- */
+.glass-card {
+  background: var(--color-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Utility: Primary Button --- */
+.btn-primary {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover);
+  transform: translateY(-2px);
+}
+
+.btn-primary:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* --- Keyframes --- */
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* --- Accessibility --- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

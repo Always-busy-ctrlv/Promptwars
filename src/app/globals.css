@@ -1,0 +1,18 @@
+/* Import the single source of truth FIRST */
+@import "../styles/design-system.css";
+
+/* Then Tailwind */
+@import "tailwindcss";
+
+/* Tailwind theme bridge — maps our tokens into Tailwind's system */
+@theme inline {
+  --color-background: var(--color-background);
+  --color-foreground: var(--color-foreground);
+  --font-sans: var(--font-family-body);
+}
+
+/*
+ * NOTE: Do NOT add body styles here.
+ * All base styles live in design-system.css.
+ * This file is only for the Tailwind import and theme bridge.
+ */
