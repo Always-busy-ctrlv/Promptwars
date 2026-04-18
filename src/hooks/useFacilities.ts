@@ -41,7 +41,9 @@ export const useFacilities = () => {
         setIsLoading(false);
         setLastUpdated(new Date());
         // Save to localStorage for SWR fallback
-        localStorage.setItem('stadium_facilities_cache', JSON.stringify(data));
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('stadium_facilities_cache', JSON.stringify(data));
+        }
       },
       (err) => {
         console.error("Firestore error:", err);
@@ -49,9 +51,11 @@ export const useFacilities = () => {
         setIsLoading(false);
         
         // SWR Fallback: Try to load from cache if network fails
-        const cached = localStorage.getItem('stadium_facilities_cache');
-        if (cached) {
-          setFacilities(JSON.parse(cached));
+        if (typeof window !== 'undefined') {
+          const cached = localStorage.getItem('stadium_facilities_cache');
+          if (cached) {
+            setFacilities(JSON.parse(cached));
+          }
         }
       }
     );

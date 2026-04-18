@@ -20,6 +20,7 @@ export const useIncentives = () => {
 
   // Stable user seed for consistent probabilistic experience per session
   const userSeed = useMemo(() => {
+    if (typeof window === 'undefined') return 0;
     let seed = localStorage.getItem('stadium_user_seed');
     if (!seed) {
       seed = Math.random().toString();
