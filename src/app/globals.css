@@ -8,11 +8,6 @@
 @theme inline {
   --color-background: var(--color-background);
   --color-foreground: var(--color-foreground);
-  --font-sans: var(--font-family-body);
+  --font-sans: var(--font-rubik), 'Rubik', sans-serif;
+  --font-heading: var(--font-outfit), 'Outfit', sans-serif;
 }
-
-/*
- * NOTE: Do NOT add body styles here.
- * All base styles live in design-system.css.
- * This file is only for the Tailwind import and theme bridge.
- */

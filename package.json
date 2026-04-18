@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "seed": "ts-node scripts/seed-firestore.ts"
   },
   "dependencies": {
     "@google-cloud/vertexai": "^1.12.0",
