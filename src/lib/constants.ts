@@ -84,3 +84,60 @@ export const MAP_HOTSPOTS = [
   { cx: 200, cy: 60,  r: 13, color: "#10B981", label: "Gate 1", labelX: 184, labelY: 46 },
   { cx: 310, cy: 120, r: 9,  color: "#10B981", label: "Gate 5", labelX: 296, labelY: 108 },
 ];
+
+// ─── Venues ──────────────────────────────────────────────────────
+import type { Venue, Poll, Achievement, FanEnergy } from "@/lib/types";
+
+export const DEMO_VENUES: Venue[] = [
+  { id: "v1", name: "MetLife Stadium",        city: "East Rutherford, NJ", capacity: 82500, gates: 8,  status: "live",     currentEvent: "Finals 2026" },
+  { id: "v2", name: "Wembley Stadium",        city: "London, UK",          capacity: 90000, gates: 12, status: "upcoming", currentEvent: "FA Cup Final" },
+  { id: "v3", name: "Melbourne Cricket Ground",city: "Melbourne, AU",      capacity: 100024,gates: 10, status: "upcoming", currentEvent: "AFL Grand Final" },
+  { id: "v4", name: "Camp Nou",               city: "Barcelona, ES",       capacity: 99354, gates: 14, status: "closed" },
+  { id: "v5", name: "Maracanã",               city: "Rio de Janeiro, BR",  capacity: 78838, gates: 6,  status: "closed" },
+];
+
+// ─── Live Polls ──────────────────────────────────────────────────
+export const DEMO_POLLS: Poll[] = [
+  {
+    id: "p1",
+    question: "Who scores the next goal?",
+    options: [
+      { id: "o1", label: "Home Team", emoji: "🏠", votes: 1247 },
+      { id: "o2", label: "Away Team", emoji: "✈️", votes: 892 },
+      { id: "o3", label: "No more goals", emoji: "🛡️", votes: 431 },
+    ],
+    totalVotes: 2570,
+    expiresAt: "2026-04-18T13:00:00Z",
+    active: true,
+  },
+  {
+    id: "p2",
+    question: "Best food stand today?",
+    options: [
+      { id: "o4", label: "Burgers & Dogs", emoji: "🍔", votes: 834 },
+      { id: "o5", label: "Pizza Palace", emoji: "🍕", votes: 612 },
+      { id: "o6", label: "Stadium Brews", emoji: "🍺", votes: 1105 },
+    ],
+    totalVotes: 2551,
+    expiresAt: "2026-04-18T14:00:00Z",
+    active: true,
+  },
+];
+
+// ─── Achievements ────────────────────────────────────────────────
+export const DEMO_ACHIEVEMENTS: Achievement[] = [
+  { id: "a1", title: "First Timer",     description: "Attended your first event",         emoji: "🎉", unlocked: true,  unlockedAt: "2026-04-18T10:00:00Z" },
+  { id: "a2", title: "Early Bird",      description: "Arrived 30 min before kickoff",     emoji: "🐦", unlocked: true,  unlockedAt: "2026-04-18T09:30:00Z" },
+  { id: "a3", title: "Smart Router",    description: "Used a faster route suggestion",    emoji: "🧭", unlocked: true,  unlockedAt: "2026-04-18T11:15:00Z" },
+  { id: "a4", title: "Foodie Explorer", description: "Visited 3 different food stands",   emoji: "🍔", unlocked: false },
+  { id: "a5", title: "Super Fan",       description: "Voted in 5 live polls",             emoji: "⭐", unlocked: false },
+  { id: "a6", title: "Exit Pro",        description: "Left within 5 min of final whistle",emoji: "🚀", unlocked: false },
+];
+
+// ─── Fan Energy ──────────────────────────────────────────────────
+export const DEMO_FAN_ENERGY: FanEnergy = {
+  level: 68,
+  milestone: "Rising Star",
+  nextMilestone: "Super Fan",
+  pointsToNext: 320,
+};

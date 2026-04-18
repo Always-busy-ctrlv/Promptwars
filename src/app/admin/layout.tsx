@@ -4,10 +4,11 @@ import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
-import { LayoutDashboard, Gift, AlertTriangle, Users, LogOut, Settings, Radio } from 'lucide-react';
+import { LayoutDashboard, Gift, AlertTriangle, Users, LogOut, Settings, Radio, Building2 } from 'lucide-react';
 
 const MENU_ITEMS = [
   { name: 'Dashboard', icon: LayoutDashboard, href: '/admin' },
+  { name: 'Venues', icon: Building2, href: '/admin/venues' },
   { name: 'Incentives', icon: Gift, href: '/admin/incentives' },
   { name: 'Alerts', icon: AlertTriangle, href: '/admin/alerts' },
   { name: 'Staff', icon: Users, href: '/admin/staff' },

@@ -14,6 +14,9 @@ import { EventTimeline } from '@/components/EventTimeline';
 import { CrowdMeter } from '@/components/CrowdMeter';
 import { LiveAlertsBanner } from '@/components/LiveAlertsBanner';
 import { WayfindingCard } from '@/components/WayfindingCard';
+import { LivePoll } from '@/components/LivePoll';
+import { FanEnergyMeter } from '@/components/FanEnergyMeter';
+import { AchievementBadges } from '@/components/AchievementBadges';
 import { useFacilities } from '@/hooks/useFacilities';
 import { useIncentives } from '@/hooks/useIncentives';
 import { EVENT_CONFIG } from '@/lib/constants';
@@ -53,9 +56,20 @@ export default function AttendeePortal() {
           <CrowdMeter />
         </section>
 
+        {/* Fan Energy + Poll (Engagement Row) */}
+        <section className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <FanEnergyMeter />
+          <LivePoll />
+        </section>
+
         {/* Map */}
         <section>
           <StadiumMap />
+        </section>
+
+        {/* Achievements */}
+        <section>
+          <AchievementBadges />
         </section>
 
         {/* Wayfinding */}
