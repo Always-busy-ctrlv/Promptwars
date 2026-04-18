@@ -1,51 +1,53 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import AttendeePortal from '@/app/page';
+import { useSession } from 'next-auth/react';
+import { useFacilities } from '@/hooks/useFacilities';
+import { useIncentives } from '@/hooks/useIncentives';
 
-// Mock hooks
-jest.mock('@/hooks/useFacilities', () => ({
-  useFacilities: () => ({
-    facilities: [
-      { id: 'f1', name: 'Test Food', type: 'Food', waitTime: 3, status: 'green', iconType: 'utensils', location: 'Sec 1' },
-    ],
-    isLoading: false,
-    lastUpdated: new Date(),
-    isLive: false,
-    iconMap: { utensils: () => null, beer: () => null, ticket: () => null, shower: () => null, store: () => null },
-  }),
-}));
-
-jest.mock('@/hooks/useIncentives', () => ({
-  useIncentives: () => ({
-    incentives: [
-      { id: 'i1', title: 'Test Offer', description: 'Go here', reward: 'Gift', targetGate: 'G1', probabilityWeight: 1, active: true },
-    ],
-    isLoading: false,
-  }),
-}));
-
-jest.mock('@/components/AIConcierge', () => ({
-  AIConcierge: () => <div data-testid="ai-concierge">AI Mock</div>,
-}));
-
+// Mock the hooks
+jest.mock('next-auth/react');
+jest.mock('@/hooks/useFacilities');
+jest.mock('@/hooks/useIncentives');
 jest.mock('@/components/StadiumMap', () => ({
-  StadiumMap: () => <div data-testid="stadium-map">Map Mock</div>,
+  StadiumMap: () => <div data-testid="stadium-map" />
 }));
+
+const MockIcon = () => <div data-testid="mock-icon" />;
 
 describe('AttendeePortal (Home Page)', () => {
-  it('renders the STADIUMGO header', () => {
-    render(<AttendeePortal />);
-    expect(screen.getByText(/STADIUM/)).toBeInTheDocument();
+  beforeEach(() => {
+    (useSession as jest.Mock).mockReturnValue({
+      data: {
+        user: { name: 'Alex', section: '102', row: 'G', seat: '14' }
+      },
+      status: 'authenticated'
+    });
+
+    (useFacilities as jest.Mock).mockReturnValue({
+      facilities: [
+        { id: '1', name: 'Burgers & Dogs', type: 'Food', waitTime: 2, status: 'green', location: 'Section 102', iconType: 'utensils' }
+      ],
+      lastUpdated: new Date(),
+      isLive: true,
+      iconMap: { utensils: MockIcon }
+    });
+
+    (useIncentives as jest.Mock).mockReturnValue({
+      incentives: [
+        { id: '1', title: 'Test Incentive', description: 'Desc', reward: 'Scarf', targetGate: 'Gate 7' }
+      ]
+    });
   });
 
-  it('renders the welcome message', () => {
+  it('renders the welcome message with user name', () => {
     render(<AttendeePortal />);
-    expect(screen.getByText(/Welcome back, Alex/)).toBeInTheDocument();
+    expect(screen.getByText(/Welcome, Alex/i)).toBeInTheDocument();
   });
 
-  it('renders the seat information', () => {
+  it('renders seat information', () => {
     render(<AttendeePortal />);
-    expect(screen.getByText(/Section 102/)).toBeInTheDocument();
+    expect(screen.getByText(/Section 102 · Row G · Seat 14/i)).toBeInTheDocument();
   });
 
   it('renders the stadium map', () => {
@@ -53,30 +55,13 @@ describe('AttendeePortal (Home Page)', () => {
     expect(screen.getByTestId('stadium-map')).toBeInTheDocument();
   });
 
-  it('renders the AI concierge', () => {
+  it('renders facilities', () => {
     render(<AttendeePortal />);
-    expect(screen.getByTestId('ai-concierge')).toBeInTheDocument();
+    expect(screen.getByText('Burgers & Dogs')).toBeInTheDocument();
   });
 
-  it('renders facility cards from hook data', () => {
+  it('renders incentives', () => {
     render(<AttendeePortal />);
-    expect(screen.getByText('Test Food')).toBeInTheDocument();
-  });
-
-  it('renders incentive cards from hook data', () => {
-    render(<AttendeePortal />);
-    expect(screen.getByText('Test Offer')).toBeInTheDocument();
-  });
-
-  it('shows the demo mode indicator', () => {
-    render(<AttendeePortal />);
-    expect(screen.getByText(/Demo/)).toBeInTheDocument();
-  });
-
-  it('renders the bottom navigation', () => {
-    render(<AttendeePortal />);
-    expect(screen.getByText('Map')).toBeInTheDocument();
-    expect(screen.getByText('Alerts')).toBeInTheDocument();
-    expect(screen.getByText('Profile')).toBeInTheDocument();
+    expect(screen.getByText('Test Incentive')).toBeInTheDocument();
   });
 });

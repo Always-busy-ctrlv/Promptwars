@@ -3,7 +3,7 @@
 import React from 'react';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { User, Bell, Wifi, WifiOff, MapPin } from 'lucide-react';
+import { User, Bell, Wifi, WifiOff, MapPin, LogOut } from 'lucide-react';
 
 interface HeaderProps {
   isLive: boolean;
@@ -35,9 +35,21 @@ export const Header: React.FC<HeaderProps> = ({ isLive, lastUpdated }) => {
           <Bell size={18} />
           <div className="absolute top-0.5 right-0.5 w-2 h-2 bg-rose-500 rounded-full" />
         </button>
-        <Link href={session ? '/admin' : '/auth/signin'} className="p-2 bg-cyan-600 rounded-xl shadow-sm text-white hover:bg-cyan-700 transition-colors" aria-label="Profile">
+        <Link href={session ? '/admin' : '/auth/signin'} className="p-2 bg-white rounded-xl shadow-sm border border-cyan-100 text-cyan-600 hover:bg-cyan-50 transition-colors" aria-label="Profile">
           <User size={18} />
         </Link>
+        {session && (
+          <button 
+            onClick={() => {
+              const { signOut } = require('next-auth/react');
+              signOut();
+            }}
+            className="p-2 bg-rose-600 rounded-xl shadow-sm text-white hover:bg-rose-700 transition-colors" 
+            aria-label="LogOut"
+          >
+            <LogOut size={18} />
+          </button>
+        )}
       </div>
     </header>
   );

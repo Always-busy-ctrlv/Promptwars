@@ -120,6 +120,7 @@ export const AIConcierge: React.FC = () => {
             />
             <button 
               onClick={handleSend}
+              aria-label="Send message"
               className="bg-cyan-600 text-white p-2 rounded-xl hover:bg-cyan-700 transition-colors"
             >
               <Send size={18} />

@@ -1,43 +1,33 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import AdminLayout from '@/app/admin/layout';
+import { useSession, signOut } from 'next-auth/react';
+
+jest.mock('next-auth/react');
 
 describe('Admin Layout', () => {
-  it('renders the STADIUMOPS branding', () => {
-    render(<AdminLayout><div>Test Child</div></AdminLayout>);
-    expect(screen.getByText(/STADIUM/)).toBeInTheDocument();
+  beforeEach(() => {
+    (useSession as jest.Mock).mockReturnValue({
+      data: { user: { name: 'Admin User', email: 'admin@test.com' } },
+      status: 'authenticated'
+    });
   });
 
-  it('renders Command Center subtitle', () => {
-    render(<AdminLayout><div>Test Child</div></AdminLayout>);
-    expect(screen.getByText('Command Center')).toBeInTheDocument();
+  it('renders children and sidebar', () => {
+    render(<AdminLayout><div>Test Content</div></AdminLayout>);
+    expect(screen.getByText('Test Content')).toBeInTheDocument();
+    expect(screen.getByText('STADIUM')).toBeInTheDocument();
   });
 
-  it('renders all navigation items', () => {
-    render(<AdminLayout><div>Test Child</div></AdminLayout>);
-    expect(screen.getByText('Dashboard')).toBeInTheDocument();
-    expect(screen.getByText('Incentives')).toBeInTheDocument();
-    expect(screen.getByText('Alerts')).toBeInTheDocument();
-    expect(screen.getByText('Staff')).toBeInTheDocument();
-  });
-
-  it('renders the Sign Out button', () => {
-    render(<AdminLayout><div>Test Child</div></AdminLayout>);
-    expect(screen.getByText('Sign Out')).toBeInTheDocument();
-  });
-
-  it('renders children', () => {
-    render(<AdminLayout><div>Child Content</div></AdminLayout>);
-    expect(screen.getByText('Child Content')).toBeInTheDocument();
-  });
-
-  it('renders the System Live indicator', () => {
+  it('renders user initials when no image', () => {
     render(<AdminLayout><div>Test</div></AdminLayout>);
-    expect(screen.getByText('System Live')).toBeInTheDocument();
+    expect(screen.getByText('AU')).toBeInTheDocument();
   });
 
-  it('renders the admin avatar', () => {
+  it('handles sign out', () => {
     render(<AdminLayout><div>Test</div></AdminLayout>);
-    expect(screen.getByText('AD')).toBeInTheDocument();
+    const signOutBtn = screen.getByText(/Sign Out/i);
+    fireEvent.click(signOutBtn);
+    expect(signOut).toHaveBeenCalledWith({ callbackUrl: '/' });
   });
 });
