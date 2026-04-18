@@ -7,7 +7,6 @@ import { Trophy } from 'lucide-react';
 /** Achievement badge grid showing unlocked and locked achievements. */
 export const AchievementBadges: React.FC = () => {
   const unlocked = DEMO_ACHIEVEMENTS.filter((a) => a.unlocked);
-  const locked = DEMO_ACHIEVEMENTS.filter((a) => !a.unlocked);
 
   return (
     <div className="glass-card p-4 space-y-3">

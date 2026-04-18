@@ -57,7 +57,7 @@ export const AIConcierge: React.FC = () => {
       const data = await resp.json();
       
       setMessages(prev => [...prev, { role: 'ai', text: data.response }]);
-    } catch (e) {
+    } catch {
       setMessages(prev => [...prev, { role: 'ai', text: "Sorry, I'm having trouble connecting to the stadium network. Please try again." }]);
     } finally {
       setIsTyping(false);
@@ -110,7 +110,9 @@ export const AIConcierge: React.FC = () => {
 
           {/* Input Area */}
           <div className="p-4 bg-white border-t border-cyan-100 flex gap-2">
+            <label htmlFor="chat-input" className="sr-only">Ask the AI Concierge</label>
             <input 
+              id="chat-input"
               type="text" 
               value={input}
               onChange={(e) => setInput(e.target.value)}
@@ -132,6 +134,8 @@ export const AIConcierge: React.FC = () => {
       {/* Toggle Button */}
       <button 
         onClick={toggleChat}
+        aria-label={isOpen ? "Close AI Concierge" : "Open AI Concierge"}
+        aria-expanded={isOpen}
         className={`w-14 h-14 rounded-full flex items-center justify-center shadow-2xl transition-all hover:scale-110 active:scale-95 ${
           isOpen ? 'bg-white text-cyan-600' : 'bg-cyan-600 text-white'
         }`}

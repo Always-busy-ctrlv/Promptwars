@@ -3,7 +3,7 @@ import { useFacilities } from '@/hooks/useFacilities';
 import * as firestore from 'firebase/firestore';
 
 // Mock firestore behavior
-let mockOnSnapshot = jest.fn();
+const mockOnSnapshot = jest.fn();
 jest.mock('firebase/firestore', () => ({
   collection: jest.fn(),
   onSnapshot: jest.fn((q, cb, err) => mockOnSnapshot(q, cb, err)),

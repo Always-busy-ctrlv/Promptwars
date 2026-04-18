@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Clock, AlertTriangle, Timer } from 'lucide-react';
+import { AlertTriangle, Timer } from 'lucide-react';
 
 interface EventTimelineProps {
   gamePeriod: string;

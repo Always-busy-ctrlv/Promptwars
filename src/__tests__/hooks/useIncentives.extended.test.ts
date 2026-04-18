@@ -2,7 +2,7 @@ import { renderHook, waitFor } from '@testing-library/react';
 import { useIncentives } from '@/hooks/useIncentives';
 
 // Mock firestore behavior
-let mockOnSnapshotInc = jest.fn();
+const mockOnSnapshotInc = jest.fn();
 jest.mock('firebase/firestore', () => ({
   collection: jest.fn(),
   onSnapshot: jest.fn((q, cb, err) => mockOnSnapshotInc(q, cb, err)),

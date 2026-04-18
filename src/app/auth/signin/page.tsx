@@ -3,7 +3,7 @@
 import React, { useState, Suspense } from 'react';
 import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
-import { Sparkles, LogIn, QrCode, Loader2, ArrowRight, Shield } from 'lucide-react';
+import { Sparkles, QrCode, Loader2, ArrowRight, Shield } from 'lucide-react';
 
 function SignInContent() {
   const searchParams = useSearchParams();
@@ -20,7 +20,7 @@ function SignInContent() {
   const handleQRSignIn = async () => {
     if (!qrToken.trim()) return;
     setIsLoading(true);
-    const result = await signIn('qr-token', {
+    await signIn('qr-token', {
       token: qrToken,
       callbackUrl,
       redirect: true,

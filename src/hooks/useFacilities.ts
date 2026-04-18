@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Beer, Utensils, Ticket, ShowerHead, Store } from 'lucide-react';
+import { Beer, Utensils, Ticket, ShowerHead, Store, type LucideIcon } from 'lucide-react';
 import { DEMO_FACILITIES } from '@/lib/constants';
 
 /** Shape of a single facility entity. */
@@ -16,7 +16,7 @@ export interface Facility {
 }
 
 /** Maps icon type strings to Lucide icon components. */
-export const iconMap: Record<string, any> = {
+export const iconMap: Record<string, LucideIcon> = {
   beer: Beer,
   utensils: Utensils,
   ticket: Ticket,
@@ -69,9 +69,10 @@ export const useFacilities = () => {
             setIsLoading(false);
           }
         );
-      } catch {
+      } catch (err) {
         console.warn('Firebase not configured, using demo data');
         setIsLoading(false);
+        setError(err instanceof Error ? err : new Error('Firestore Error'));
       }
     }
 

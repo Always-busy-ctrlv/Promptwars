@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Navigation, Footprints, Clock } from 'lucide-react';
+import { Navigation, Footprints } from 'lucide-react';
 
 interface WayfindingCardProps {
   from: string;

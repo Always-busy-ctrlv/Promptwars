@@ -27,8 +27,8 @@ export default function AttendeePortal() {
   const { incentives } = useIncentives();
 
   const userName = session?.user?.name?.split(' ')[0] || 'Guest';
-  const seatInfo = (session?.user as any)?.section
-    ? `Section ${(session?.user as any).section} · Row ${(session?.user as any).row} · Seat ${(session?.user as any).seat}`
+  const seatInfo = session?.user?.section
+    ? `Section ${session.user.section} · Row ${session.user.row} · Seat ${session.user.seat}`
     : 'Section 102 · Row G · Seat 14';
 
   return (

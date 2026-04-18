@@ -6,7 +6,7 @@ import { useFacilities } from '@/hooks/useFacilities';
 import { Users, TrendingUp, Clock, AlertTriangle, ArrowUp, ArrowDown } from 'lucide-react';
 
 export default function AdminDashboard() {
-  const { facilities, isLoading, isLive } = useFacilities();
+  const { facilities, isLive } = useFacilities();
 
   const stats = [
     { name: 'Total Attendees', value: '42,108', icon: Users, color: 'text-cyan-400', bg: 'bg-cyan-500/10', trend: '+1,204', up: true },

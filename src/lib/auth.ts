@@ -1,8 +1,28 @@
-import NextAuth from "next-auth";
-import type { NextAuthOptions } from "next-auth";
+import type { NextAuthOptions, User as DefaultUser } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { jwtVerify } from "jose";
+
+declare module "next-auth" {
+  interface User {
+    role?: string;
+    section?: string;
+    row?: string;
+    seat?: string;
+  }
+  interface Session {
+    user: User;
+  }
+}
+
+declare module "next-auth/jwt" {
+  interface JWT {
+    role?: string;
+    section?: string;
+    row?: string;
+    seat?: string;
+  }
+}
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -29,10 +49,10 @@ export const authOptions: NextAuthOptions = {
             email: null,
             image: null,
             role: "attendee",
-            section: payload.section,
-            row: payload.row,
-            seat: payload.seat,
-          } as any;
+            section: payload.section as string,
+            row: payload.row as string,
+            seat: payload.seat as string,
+          };
         } catch {
           return null;
         }
@@ -43,20 +63,20 @@ export const authOptions: NextAuthOptions = {
     async jwt({ token, user, account }) {
       if (user) {
         token.role =
-          (user as any).role ||
+          user.role ||
           (account?.provider === "google" ? "admin" : "attendee");
-        token.section = (user as any).section;
-        token.row = (user as any).row;
-        token.seat = (user as any).seat;
+        token.section = user.section;
+        token.row = user.row;
+        token.seat = user.seat;
       }
       return token;
     },
     async session({ session, token }) {
       if (session.user) {
-        (session.user as any).role = token.role || "attendee";
-        (session.user as any).section = token.section;
-        (session.user as any).row = token.row;
-        (session.user as any).seat = token.seat;
+        session.user.role = token.role || "attendee";
+        session.user.section = token.section;
+        session.user.row = token.row;
+        session.user.seat = token.seat;
       }
       return session;
     },

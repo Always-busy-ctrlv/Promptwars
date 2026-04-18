@@ -1,9 +1,9 @@
 'use client';
 
 import React from 'react';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import Link from 'next/link';
-import { User, Bell, Wifi, WifiOff, MapPin, LogOut } from 'lucide-react';
+import { User, Bell, Wifi, WifiOff, LogOut } from 'lucide-react';
 
 interface HeaderProps {
   isLive: boolean;
@@ -40,10 +40,7 @@ export const Header: React.FC<HeaderProps> = ({ isLive, lastUpdated }) => {
         </Link>
         {session && (
           <button 
-            onClick={() => {
-              const { signOut } = require('next-auth/react');
-              signOut();
-            }}
+            onClick={() => signOut()}
             className="p-2 bg-rose-600 rounded-xl shadow-sm text-white hover:bg-rose-700 transition-colors" 
             aria-label="LogOut"
           >
