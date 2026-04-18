@@ -3,21 +3,23 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSession, signOut } from 'next-auth/react';
 import { LayoutDashboard, Gift, AlertTriangle, Users, LogOut, Settings, Radio } from 'lucide-react';
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const pathname = usePathname();
+const MENU_ITEMS = [
+  { name: 'Dashboard', icon: LayoutDashboard, href: '/admin' },
+  { name: 'Incentives', icon: Gift, href: '/admin/incentives' },
+  { name: 'Alerts', icon: AlertTriangle, href: '/admin/alerts' },
+  { name: 'Staff', icon: Users, href: '/admin/staff' },
+];
 
-  const menuItems = [
-    { name: 'Dashboard', icon: LayoutDashboard, href: '/admin' },
-    { name: 'Incentives', icon: Gift, href: '/admin/incentives' },
-    { name: 'Alerts', icon: AlertTriangle, href: '/admin/alerts' },
-    { name: 'Staff', icon: Users, href: '/admin/staff' },
-  ];
+export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const { data: session } = useSession();
+
+  const initials = session?.user?.name
+    ? session.user.name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
+    : 'AD';
 
   return (
     <div className="flex min-h-screen bg-slate-950 text-slate-100" style={{ fontFamily: 'var(--font-family-body)' }}>
@@ -31,7 +33,7 @@ export default function AdminLayout({
         </div>
 
         <nav className="flex-1 p-3 space-y-1">
-          {menuItems.map((item) => {
+          {MENU_ITEMS.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
@@ -50,15 +52,34 @@ export default function AdminLayout({
           })}
         </nav>
 
-        <div className="p-3 border-t border-slate-800/50">
-          <button className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-500/5 transition-colors text-sm font-medium">
+        {/* User + Sign Out */}
+        <div className="p-3 border-t border-slate-800/50 space-y-2">
+          {session?.user && (
+            <div className="px-3 py-2 flex items-center gap-2.5">
+              {session.user.image ? (
+                <img src={session.user.image} alt="" className="w-7 h-7 rounded-full" />
+              ) : (
+                <div className="w-7 h-7 rounded-full bg-gradient-to-br from-cyan-500 to-emerald-500 flex items-center justify-center font-bold text-[10px] text-white">
+                  {initials}
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold text-slate-200 truncate">{session.user.name}</p>
+                <p className="text-[9px] text-slate-500 truncate">{session.user.email}</p>
+              </div>
+            </div>
+          )}
+          <button
+            onClick={() => signOut({ callbackUrl: '/' })}
+            className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-500 hover:text-rose-400 hover:bg-rose-500/5 transition-colors text-sm font-medium"
+          >
             <LogOut size={18} />
             Sign Out
           </button>
         </div>
       </aside>
 
-      {/* Main */}
+      {/* Main Content */}
       <main className="flex-1 overflow-auto">
         <header className="px-6 py-4 border-b border-slate-800/50 flex justify-between items-center bg-slate-900/30 backdrop-blur-sm">
           <div className="flex items-center gap-3">
@@ -72,15 +93,9 @@ export default function AdminLayout({
             <button className="p-1.5 text-slate-500 hover:text-slate-300 transition-colors rounded-lg hover:bg-slate-800">
               <Settings size={18} />
             </button>
-            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-cyan-500 to-emerald-500 flex items-center justify-center font-bold text-[10px] text-white">
-              AD
-            </div>
           </div>
         </header>
-
-        <div className="p-6">
-          {children}
-        </div>
+        <div className="p-6">{children}</div>
       </main>
     </div>
   );

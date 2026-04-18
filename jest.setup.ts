@@ -16,7 +16,34 @@ jest.mock('next/navigation', () => ({
   useSearchParams: () => new URLSearchParams(),
 }));
 
-// Mock localStorage only in browser-like environments
+// Mock Jose (JWT)
+jest.mock('jose', () => ({
+  SignJWT: jest.fn().mockImplementation(() => ({
+    setProtectedHeader: jest.fn().mockReturnThis(),
+    setIssuedAt: jest.fn().mockReturnThis(),
+    setExpirationTime: jest.fn().mockReturnThis(),
+    sign: jest.fn().mockResolvedValue('mocked-token'),
+  })),
+  jwtVerify: jest.fn().mockResolvedValue({ payload: {} }),
+}));
+
+// Mock Firebase
+jest.mock('firebase/app', () => ({
+  initializeApp: jest.fn(),
+  getApps: jest.fn(() => []),
+  getApp: jest.fn(),
+}));
+
+jest.mock('firebase/firestore', () => ({
+  getFirestore: jest.fn(),
+  collection: jest.fn(),
+  onSnapshot: jest.fn(),
+  query: jest.fn(),
+  where: jest.fn(),
+  orderBy: jest.fn(),
+}));
+
+// Mock localStorage
 if (typeof window !== 'undefined') {
   const localStorageMock = (() => {
     let store: Record<string, string> = {};

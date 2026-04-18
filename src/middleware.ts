@@ -1,21 +1,27 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
 
-export function middleware(req: NextRequest) {
-  // For now, allow all traffic. When Google OAuth is configured,
-  // re-enable the next-auth/middleware withAuth wrapper.
-  //
-  // Admin routes are currently public for demo purposes.
-  // In production, uncomment the auth check below:
-  //
-  // const token = req.cookies.get('next-auth.session-token');
-  // if (!token) {
-  //   return NextResponse.redirect(new URL('/api/auth/signin', req.url));
-  // }
+export default withAuth(
+  function middleware(req) {
+    const token = req.nextauth.token;
+    const isAdmin = req.nextUrl.pathname.startsWith("/admin");
 
-  return NextResponse.next();
-}
+    if (isAdmin && token?.role !== "admin") {
+      return NextResponse.redirect(new URL("/", req.url));
+    }
+
+    return NextResponse.next();
+  },
+  {
+    callbacks: {
+      authorized: ({ token }) => !!token,
+    },
+    pages: {
+      signIn: "/auth/signin",
+    },
+  }
+);
 
 export const config = {
-  matcher: ['/admin/:path*'],
+  matcher: ["/admin/:path*"],
 };
